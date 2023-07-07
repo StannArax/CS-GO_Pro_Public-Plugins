@@ -39,6 +39,7 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 			{
 				GivePlayerItem(i, "item_assaultsuit");
 				GivePlayerItem(i, "item_helmet");
+				PrintToServer("roundCount: %d", roundCount);
 			}
 		}
 	}
