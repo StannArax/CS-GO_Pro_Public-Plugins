@@ -20,7 +20,8 @@ public void OnPluginStart()
 	HookEvent("round_start", OnRoundStart);
 }
 
-int whoUsedTaser[20];
+int whoUsedTaser[32];
+int taserCooldown[32];
 int currentIndex = 0;
 
 public void giveItemToPlayer(int client, const char[] item)
@@ -44,6 +45,50 @@ public void giveItemToPlayer(int client, const char[] item)
 		// Add money to player's account
 		SetEntProp(client, Prop_Send, "m_iAccount", player_money + 650);
 	}
+}
+
+public Action CS_OnBuyCommand(int client, const char[] weapon)
+{
+	if (!IsClientInGame(client))
+	{
+		return Plugin_Continue;
+	}
+	else if (strcmp(weapon, "weapon_xm1014") == 0 || strcmp(weapon, "weapon_mag7") == 0 || strcmp(weapon, "weapon_sawedoff") == 0 || strcmp(weapon, "weapon_nova") == 0)
+	{
+		char message[128];
+		Format(message, sizeof(message), "You cannot buy this weapon: %s", weapon);
+		PrintToChat(client, message);
+	}
+	else if (strcmp(weapon, "weapon_taser") == 0)
+	{
+		if (taserCooldown[client] > 0)
+		{
+			char message[128];
+			Format(message, sizeof(message), "You can buy taser once every 5 rounds. Cooldown remaining: %d rounds", taserCooldown[client]);
+			PrintToChat(client, message);
+		}
+		else
+		{
+			char item[128];
+			Format(item, sizeof(item), "weapon_%s", weapon);
+			giveItemToPlayer(client, item);
+			taserCooldown[client] = 5;	  // Set the cooldown to 5 rounds
+		}
+	}
+	else if (GetTeamClientCount(GetClientTeam(client)) == 4 && (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_bizon") == 0 || strcmp(weapon, "weapon_scar20") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_awp") == 0))
+	{
+		char item[128];
+		Format(item, sizeof(item), "weapon_%s", weapon);
+		giveItemToPlayer(client, item);
+	}
+	else
+	{
+		char message[128];
+		Format(message, sizeof(message), "You are not allowed to buy this weapon: %s", weapon);
+		PrintToChat(client, message);
+	}
+
+	return Plugin_Handled;
 }
 
 public int getWeaponMoney(int client, const char[] itemName)
@@ -206,17 +251,15 @@ public int getWeaponMoney(int client, const char[] itemName)
 
 public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	if (GetTeamScore(2) + GetTeamScore(3) > 15)
+	// Decrease taser cooldown for each player
+	for (int i = 1; i <= MaxClients; i++)
 	{
-		currentIndex = 0;
-		for (int i = 0; i < sizeof(whoUsedTaser); i++)
+		if (taserCooldown[i] > 0)
 		{
-			whoUsedTaser[i] = -1;
+			taserCooldown[i]--;
 		}
-		char message[128];
-		Format(message, sizeof(message), "%s hah", GetTeamScore(2) + GetTeamScore(3));
-		PrintToChatAll(message);
 	}
+
 	return Plugin_Continue;
 }
 
