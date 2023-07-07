@@ -23,99 +23,13 @@ public void OnPluginStart()
 int whoUsedTaser[20];
 int currentIndex = 0;
 
-public Action CS_OnBuyCommand(int client, const char[] weapon)
-{
-	if (!IsClientInGame(client))
-	{
-		return Plugin_Continue;
-	}
-	else
-	{
-		if (strcmp(weapon, "nova") == 0 || strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0)
-		{
-			char message[128];
-			Format(message, sizeof(message), "You cannot buy this weapon!y %s ", weapon);
-			PrintToChat(client, message);
-		}
-		else if (GetTeamClientCount(GetClientTeam(client)) <= 3)
-		{
-			char clientTeam[32];
-
-			if (strcmp(weapon, "m249") == 0 || strcmp(weapon, "negev") == 0 || strcmp(weapon, "awp") == 0 || strcmp(weapon, "p90") == 0 || strcmp(weapon, "g3sg1") == 0 || strcmp(weapon, "scar20") == 0 || strcmp(weapon, "bizon") == 0)
-			{
-				char message[128];
-				Format(message, sizeof(message), "%s Team needs to have more than 2 players!", clientTeam);
-				PrintToChat(client, message);
-			}
-			else {
-				char item[128];
-				Format(item, sizeof(item), "weapon_%s", weapon);
-				giveItemToPlayer(client, item);
-			}
-		}
-		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
-			char item[128];
-			Format(item, sizeof(item), "weapon_%s", weapon);
-			giveItemToPlayer(client, item);
-		}
-		else if (strcmp(weapon, "taser")) {
-			for (int i = 0; i < sizeof(whoUsedTaser); i++)
-			{
-				if (GetClientUserId(client) == whoUsedTaser[i])
-				{
-					char message[128];
-					Format(message, sizeof(message), "You can use the taser on every half.");
-					PrintToChat(client, message);
-				}
-				else
-				{
-					char item[128];
-					Format(item, sizeof(item), "weapon_%s", weapon);
-					giveItemToPlayer(client, item);
-					whoUsedTaser[currentIndex] = GetClientUserId(client);
-					currentIndex++;
-				}
-			}
-		}
-	}
-
-	return Plugin_Handled;
-}
-
 public void giveItemToPlayer(int client, const char[] item)
 {
 	int weapon_money = getWeaponMoney(client, item);
 	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 
 	// Give the item to the player
-	if (strcmp(item, "weapon_kevlar"))
-	{
-		GivePlayerItem(client, "item_kevlar");
-
-		char message[128];
-		Format(message, sizeof(message), "%s hahx");
-		PrintToChatAll(message);
-	}
-
-	else if (strcmp(item, "weapon_assaultsuit")) {
-		GivePlayerItem(client, "item_assaultsuit");
-		char message[128];
-		Format(message, sizeof(message), "%s hahy");
-		PrintToChatAll(message);
-	}
-
-	else if (strcmp(item, "weapon_defuser")) {
-		GivePlayerItem(client, "item_defuser");
-		char message[128];
-		Format(message, sizeof(message), "%s hahz");
-		PrintToChatAll(message);
-	}
-	else {
-		GivePlayerItem(client, item);
-		char message[128];
-		Format(message, sizeof(message), "%s hahp");
-		PrintToChatAll(message);
-	}
+	GivePlayerItem(client, item);
 
 	// Deduct money from player's account
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
