@@ -30,6 +30,7 @@ public Action LoadStuff(Handle timer)
             continue;
         
         CS_SetClientClanTag(client, "B4N | ");
+		PrintToConsole(client, "B4N")
     }
 
 	return Plugin_Continue;
