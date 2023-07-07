@@ -83,18 +83,13 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
-	int weapon_money = getWeaponMoney(client, item);
-	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
-
-	if (player_money >= weapon_money)
-	{
-		GivePlayerItem(client, item);
-		SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
-	}
-	else
-	{
-		PrintToChat(client, "You do not have anough money to buy this weapon");
-	}
+	int	 weapon_money = getWeaponMoney(client, item);
+	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
+	char message[128];
+	Format(message, sizeof(message), "You cannot buy this weapon! %s", weapon_money);
+	PrintToChat(client, message);
+	GivePlayerItem(client, item);
+	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
 }
 
 public int getWeaponMoney(int client, const char[] itemName)
