@@ -87,17 +87,23 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
-	int	 weapon_money = getWeaponMoney(client, item);
-	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
-	char item[128];
-	Format(item, sizeof(item), "money: %d", weapon_money);
-	giveItemToPlayer(client, item);
+	int weapon_money = getWeaponMoney(client, item);
+	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
+
+	// Give the item to the player
+	GivePlayerItem(client, item);
+
+	// Deduct money from player's account
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
+
+	// Check if the player already has kevlar or the item costs 1000 money
 	if (GetClientArmor(client) == 100 || weapon_money == 1000)
 	{
 		char message[128];
 		Format(message, sizeof(message), "You already have kevlar, bought helmet");
 		PrintToChat(client, message);
+
+		// Add money to player's account
 		SetEntProp(client, Prop_Send, "m_iAccount", player_money + 650);
 	}
 }
