@@ -24,13 +24,12 @@ public void OnPluginStart()
 
 public Action Timer_PrintMessageFiveTimes(Handle timer)
 {
-	for (int client = 2; client <= MaxClients; client++)
+	for (int client = 1; client <= MaxClients; client++)
 	{
 		if (!IsClientInGame(client))
 			continue;
 			
 			CS_SetClientClanTag(client, "B4N | ");
-			PrintToConsole(client, "B4N");
 	}
 
 	return Plugin_Continue;
