@@ -80,11 +80,12 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				}
 			}
 		}
-		else if (strcmp(weapon, "kevlar") || strcmp(weapon, "assaultsuit"))
+		else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0)
 		{
 			char message[128];
-			Format(message, sizeof(message), "Kevlar  or Assaultsuit");
+			Format(message, sizeof(message), "Kevlar or Assaultsuit");
 			PrintToChat(client, message);
+
 			char item[128];
 			Format(item, sizeof(item), "item_%s", weapon);
 			giveItemToPlayer(client, item);
