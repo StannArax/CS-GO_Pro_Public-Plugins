@@ -80,15 +80,6 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				}
 			}
 		}
-		else if (strcmp(weapon, "kevlar") || strcmp(weapon, "assaultsuit"))
-		{
-			char message[128];
-			Format(message, sizeof(message), "Kevlar  or Assaultsuit");
-			PrintToChat(client, message);
-			char item[128];
-			Format(item, sizeof(item), "item_%s", weapon);
-			giveItemToPlayer(client, item);
-		}
 	}
 
 	return Plugin_Handled;
@@ -96,11 +87,13 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
-	int weapon_money = getWeaponMoney(client, item);
-	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
-	GivePlayerItem(client, item);
+	int	 weapon_money = getWeaponMoney(client, item);
+	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
+	char item[128];
+	Format(item, sizeof(item), "money: %d", weapon_money);
+	giveItemToPlayer(client, item);
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
-	if (GetClientArmor(client) == 100)
+	if (GetClientArmor(client) == 100 || weapon_money == 1000)
 	{
 		char message[128];
 		Format(message, sizeof(message), "You already have kevlar, bought helmet");
@@ -247,14 +240,14 @@ public int getWeaponMoney(int client, const char[] itemName)
 	{
 		return CS_GetWeaponPrice(client, CSWeapon_SMOKEGRENADE, false);
 	}
-	else if (strcmp(itemName, "item_kevlar") == 0)
+	else if (strcmp(itemName, "weapon_kevlar") == 0)
 	{
 		char message[128];
 		Format(message, sizeof(message), "KEVLAR");
 		PrintToChat(client, message);
 		return CS_GetWeaponPrice(client, CSWeapon_KEVLAR, false);
 	}
-	else if (strcmp(itemName, "item_assaultsuit") == 0)
+	else if (strcmp(itemName, "weapon_assaultsuit") == 0)
 	{
 		char message[128];
 		Format(message, sizeof(message), "ASSAULTSUIT");
