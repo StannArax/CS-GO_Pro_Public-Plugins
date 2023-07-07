@@ -25,9 +25,6 @@ int currentIndex = 0;
 
 public Action CS_OnBuyCommand(int client, const char[] weapon)
 {
-	char message[128];
-	Format(message, sizeof(message), "Kevlar  or Assaultsuit %s", weapon);
-	PrintToChat(client, message);
 	if (!IsClientInGame(client))
 	{
 		return Plugin_Continue;
@@ -248,17 +245,11 @@ public int getWeaponMoney(int client, const char[] itemName)
 	}
 	else if (strcmp(itemName, "weapon_kevlar") == 0)
 	{
-		char message[128];
-		Format(message, sizeof(message), "KEVLAR");
-		PrintToChat(client, message);
 		return CS_GetWeaponPrice(client, CSWeapon_KEVLAR, false);
 	}
 	else if (strcmp(itemName, "weapon_assaultsuit") == 0)
 	{
-		char message[128];
-		Format(message, sizeof(message), "ASSAULTSUIT");
-		PrintToChat(client, message);
-		return CS_GetWeaponPrice(client, CSWeapon_ASSAULTSUIT, false);
+		return CS_GetWeaponPrice(client, CSWeapon_ASSAULTSUIT, true);
 	}
 	else if (strcmp(itemName, "item_defuser") == 0)
 	{
