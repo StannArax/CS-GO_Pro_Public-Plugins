@@ -81,6 +81,12 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		Format(item, sizeof(item), "weapon_%s", weapon);
 		giveItemToPlayer(client, item);
 	}
+	else if (strcmp(weapon, "weapon_deagle") == 0 || strcmp(weapon, "weapon_kevlar") == 0 || strcmp(weapon, "weapon_assaultsuit") == 0)
+	{
+		char item[128];
+		Format(item, sizeof(item), "weapon_%s", weapon);
+		giveItemToPlayer(client, item);
+	}
 	else
 	{
 		char message[128];
