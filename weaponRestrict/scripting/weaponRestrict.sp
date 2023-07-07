@@ -279,10 +279,10 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 		{
 			whoUsedTaser[i] = -1;
 		}
+		char message[128];
+		Format(message, sizeof(message), "%s Team needs to have more than 2 players!", GetTeamScore(2) + GetTeamScore(3));
+		PrintToChatAll(message);
 	}
-	char message[128];
-	Format(message, sizeof(message), "%s Team needs to have more than 2 players!", GetTeamScore(2) + GetTeamScore(3));
-	PrintToChatAll(message);
 	return Plugin_Continue;
 }
 
