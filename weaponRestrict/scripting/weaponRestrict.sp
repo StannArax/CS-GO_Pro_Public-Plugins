@@ -24,9 +24,12 @@ int currentIndex = 0;
 
 public Action CS_OnBuyCommand(int client, const char[] weapon)
 {
-	if (!IsClientInGame(client)) { return Plugin_Continue; PrintToConsole(client, "false"); }
+	if (!IsClientInGame(client))
+	{
+		return Plugin_Continue;
+	}
 	else {
-		if (strcmp(weapon, "weapon_nova") == 0 || strcmp(weapon, "weapon_xm1014") == 0 || strcmp(weapon, "weapon_mag7") == 0 || strcmp(weapon, "weapon_sawedoff") == 0)
+		if (strcmp(weapon, "nova") == 0 || strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0)
 		{
 			char message[128];
 			Format(message, sizeof(message), "You cannot buy this weapon! %s", weapon);
@@ -36,20 +39,24 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		{
 			char clientTeam[32];
 
-			if (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_awp") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_scar20") == 0 || strcmp(weapon, "weapon_bizon") == 0)
+			if (strcmp(weapon, "m249") == 0 || strcmp(weapon, "negev") == 0 || strcmp(weapon, "awp") == 0 || strcmp(weapon, "p90") == 0 || strcmp(weapon, "g3sg1") == 0 || strcmp(weapon, "scar20") == 0 || strcmp(weapon, "bizon") == 0)
 			{
 				char message[128];
 				Format(message, sizeof(message), "%s Team needs to have more than 2 players!", clientTeam);
 				PrintToChat(client, message);
 			}
 			else {
-				GivePlayerItem(client, weapon);
+				char item[128];
+				Format(item, sizeof(item), "weapon_%s", weapon);
+				GivePlayerItem(client, item);
 			}
 		}
 		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
-			GivePlayerItem(client, weapon);
+			char item[128];
+			Format(item, sizeof(item), "weapon_%s", weapon);
+			GivePlayerItem(client, item);
 		}
-		else if (strcmp(weapon, "weapon_taser")) {
+		else if (strcmp(weapon, "taser")) {
 			for (int i = 0; i < sizeof(whoUsedTaser); i++)
 			{
 				if (GetClientUserId(client) == whoUsedTaser[i])
@@ -60,7 +67,9 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				}
 				else
 				{
-					GivePlayerItem(client, weapon);
+					char item[128];
+					Format(item, sizeof(item), "weapon_%s", weapon);
+					GivePlayerItem(client, item);
 					whoUsedTaser[currentIndex] = GetClientUserId(client);
 					currentIndex++;
 				}
