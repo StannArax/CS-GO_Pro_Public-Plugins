@@ -16,7 +16,11 @@ public Plugin myinfo =
 public void OnPluginStart()
 {
 	PrintToServer("Weapon Restriction Plugin Has Been Loaded Successfully");
+	HookEvent("round_start", OnRoundStart);
 }
+
+int whoUsedTaser[20];
+int currentIndex = 0;
 
 public Action CS_OnBuyCommand(int client, const char[] weapon)
 {
@@ -45,7 +49,52 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
 			GivePlayerItem(client, weapon);
 		}
+		else if (strcmp(weapon, "weapon_taser")) {
+			for (int i = 0; i < sizeof(whoUsedTaser); i++)
+			{
+				if (GetClientUserId(client) == whoUsedTaser[i])
+				{
+					char message[128];
+					Format(message, sizeof(message), "You can use the taser on every half.");
+					PrintToChat(client, message);
+				}
+				else
+				{
+					GivePlayerItem(client, weapon);
+					whoUsedTaser[currentIndex] = GetClientUserId(client);
+					currentIndex++;
+				}
+			}
+		}
 	}
 
 	return Plugin_Handled;
+}
+
+public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
+{
+	if (GetTeamScore(2) + GetTeamScore(3) == 15)
+	{
+		currentIndex = 0;
+		for (int i = 0; i < sizeof(whoUsedTaser); i++)
+		{
+			whoUsedTaser[i] = -1;
+		}
+	}
+
+	return Plugin_Continue;
+}
+
+public void OnPluginEnd()
+{
+	UnhookEvent("round_start", OnRoundStart);
+}
+
+public void OnMapStart()
+{
+	currentIndex = 0;
+	for (int i = 0; i < sizeof(whoUsedTaser); i++)
+	{
+		whoUsedTaser[i] = -1;
+	}
 }
