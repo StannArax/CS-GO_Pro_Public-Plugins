@@ -19,7 +19,7 @@ public void OnClientPutInServer(int client)
 
 public void OnPluginStart()
 {
-	CreateTimer(3.0, Timer_PrintMessageFiveTimes, _, TIMER_REPEAT);
+	CreateTimer(1.0, Timer_PrintMessageFiveTimes, _, TIMER_REPEAT);
 }
 
 public Action Timer_PrintMessageFiveTimes(Handle timer)
