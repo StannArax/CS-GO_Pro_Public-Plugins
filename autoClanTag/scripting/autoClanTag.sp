@@ -5,33 +5,33 @@
 
 public Plugin myinfo =
 {
-    name        = "autoClanTag",
-    author      = "StannArax",
-    description = "Automatically updates players' clantag.",
-    version     = "1.0.0",
-    url         = "https://github.com/StannArax/autoArmor"
+	name		= "autoClanTag",
+	author		= "StannArax",
+	description = "Automatically updates players' clantag.",
+	version		= "1.0.0",
+	url			= "https://github.com/StannArax/autoArmor"
 };
 
 public void OnClientPutInServer(int client)
 {
-    CS_SetClientClanTag(client, "B4N | ");
+	CS_SetClientClanTag(client, "B4N | ");
 }
 
 public void OnPluginStart()
 {
-    CreateTimer(1.0, LoadStuff);
+	CreateTimer(3.0, Timer_PrintMessageFiveTimes, _, TIMER_REPEAT);
 }
- 
-public Action LoadStuff(Handle timer)
+
+public Action Timer_PrintMessageFiveTimes(Handle timer)
 {
-    for (int client = 1; client <= MaxClients; client++)
-    {
-        if (!IsClientInGame(client))
-            continue;
-        
-        CS_SetClientClanTag(client, "B4N | ");
-		PrintToConsole(client, "B4N")
-    }
+	for (int client = 1; client <= MaxClients; client++)
+	{
+		if (!IsClientInGame(client))
+			continue;
+			
+			CS_SetClientClanTag(client, "B4N | ");
+			PrintToConsole(client, "B4N");
+	}
 
 	return Plugin_Continue;
 }
