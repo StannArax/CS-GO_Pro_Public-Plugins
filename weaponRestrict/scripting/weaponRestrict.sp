@@ -45,16 +45,16 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				Format(message, sizeof(message), "%s Team needs to have more than 2 players!", clientTeam);
 				PrintToChat(client, message);
 			}
-			else {
-				char item[128];
-				Format(item, sizeof(item), "weapon_%s", weapon);
-				GivePlayerItem(client, item);
-			}
+			// else {
+			// 	char item[128];
+			// 	Format(item, sizeof(item), "weapon_%s", weapon);
+			// 	GivePlayerItem(client, item);
+			// }
 		}
 		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
-			char item[128];
-			Format(item, sizeof(item), "weapon_%s", weapon);
-			GivePlayerItem(client, item);
+			// char item[128];
+			// Format(item, sizeof(item), "weapon_%s", weapon);
+			// GivePlayerItem(client, item);
 		}
 		else if (strcmp(weapon, "taser")) {
 			for (int i = 0; i < sizeof(whoUsedTaser); i++)
@@ -67,9 +67,9 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				}
 				else
 				{
-					char item[128];
-					Format(item, sizeof(item), "weapon_%s", weapon);
-					GivePlayerItem(client, item);
+					// char item[128];
+					// Format(item, sizeof(item), "weapon_%s", weapon);
+					// GivePlayerItem(client, item);
 					whoUsedTaser[currentIndex] = GetClientUserId(client);
 					currentIndex++;
 				}
