@@ -77,6 +77,9 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			}
 		}
 		else if (strcmp(weapon, "kevlar") || strcmp(weapon, "assaultsuit")) {
+			char message[128];
+			Format(message, sizeof(message), "Kevlar  or Assaultsuit");
+			PrintToChat(client, message);
 			char item[128];
 			Format(item, sizeof(item), "item_%s", weapon);
 			giveItemToPlayer(client, item);
@@ -249,7 +252,7 @@ public int getWeaponMoney(int client, const char[] itemName)
 	else if (strcmp(itemName, "item_assaultsuit") == 0)
 	{
 		char message[128];
-		Format(message, sizeof(message), "assaultsuit");
+		Format(message, sizeof(message), "ASSAULTSUIT");
 		PrintToChat(client, message);
 		return CS_GetWeaponPrice(client, CSWeapon_ASSAULTSUIT, false);
 	}
