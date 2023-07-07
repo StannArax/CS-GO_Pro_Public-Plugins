@@ -52,6 +52,22 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			taserCooldown[client] = 5; // Set the cooldown to 5 rounds
 		}
 	}
+	else if (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_bizon") == 0 || strcmp(weapon, "weapon_scar20") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_awp") == 0)
+	{
+		int teamClientCount = GetTeamClientCount(GetClientTeam(client));
+		if (teamClientCount >= 4)
+		{
+			char item[128];
+			Format(item, sizeof(item), "weapon_%s", weapon);
+			giveItemToPlayer(client, item);
+		}
+		else
+		{
+			char message[128];
+			Format(message, sizeof(message), "Your team needs to have at least 4 players to buy this weapon: %s", weapon);
+			PrintToChat(client, message);
+		}
+	}
 	else
 	{
 		char item[128];
