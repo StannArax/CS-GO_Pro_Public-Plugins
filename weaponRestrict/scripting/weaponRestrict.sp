@@ -24,29 +24,6 @@ int whoUsedTaser[32];
 int taserCooldown[32];
 int currentIndex = 0;
 
-public void giveItemToPlayer(int client, const char[] item)
-{
-	int weapon_money = getWeaponMoney(client, item);
-	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
-
-	// Give the item to the player
-	GivePlayerItem(client, item);
-
-	// Deduct money from player's account
-	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
-
-	// Check if the player already has kevlar or the item costs 1000 money
-	if (GetClientArmor(client) == 100 && weapon_money == 1000)
-	{
-		char message[128];
-		Format(message, sizeof(message), "You already have kevlar, bought helmet");
-		PrintToChat(client, message);
-
-		// Add money to player's account
-		SetEntProp(client, Prop_Send, "m_iAccount", player_money + 650);
-	}
-}
-
 public Action CS_OnBuyCommand(int client, const char[] weapon)
 {
 	if (!IsClientInGame(client))
@@ -72,29 +49,54 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			char item[128];
 			Format(item, sizeof(item), "weapon_%s", weapon);
 			giveItemToPlayer(client, item);
-			taserCooldown[client] = 5;	  // Set the cooldown to 5 rounds
+			taserCooldown[client] = 5; // Set the cooldown to 5 rounds
 		}
-	}
-	else if (GetTeamClientCount(GetClientTeam(client)) == 4 && (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_bizon") == 0 || strcmp(weapon, "weapon_scar20") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_awp") == 0))
-	{
-		char item[128];
-		Format(item, sizeof(item), "weapon_%s", weapon);
-		giveItemToPlayer(client, item);
-	}
-	else if (strcmp(weapon, "weapon_deagle") == 0 || strcmp(weapon, "weapon_kevlar") == 0 || strcmp(weapon, "weapon_assaultsuit") == 0)
-	{
-		char item[128];
-		Format(item, sizeof(item), "weapon_%s", weapon);
-		giveItemToPlayer(client, item);
 	}
 	else
 	{
-		char message[128];
-		Format(message, sizeof(message), "You are not allowed to buy this weapon: %s", weapon);
-		PrintToChat(client, message);
+		char item[128];
+		Format(item, sizeof(item), "weapon_%s", weapon);
+		giveItemToPlayer(client, item);
 	}
 
 	return Plugin_Handled;
+}
+
+public void giveItemToPlayer(int client, const char[] item)
+{
+	int weapon_money = getWeaponMoney(client, item);
+	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
+
+	// Give the item to the player
+	GivePlayerItem(client, item);
+
+	// Deduct money from player's account
+	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
+
+	// Check if the player already has kevlar or the item costs 1000 money
+	if (GetClientArmor(client) == 100 && weapon_money == 1000)
+	{
+		char message[128];
+		Format(message, sizeof(message), "You already have kevlar, bought helmet");
+		PrintToChat(client, message);
+
+		// Add money to player's account
+		SetEntProp(client, Prop_Send, "m_iAccount", player_money + 650);
+	}
+}
+
+public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
+{
+	// Decrease taser cooldown for each player
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (taserCooldown[i] > 0)
+		{
+			taserCooldown[i]--;
+		}
+	}
+
+	return Plugin_Continue;
 }
 
 public int getWeaponMoney(int client, const char[] itemName)
@@ -253,20 +255,6 @@ public int getWeaponMoney(int client, const char[] itemName)
 	}
 
 	return 0;
-}
-
-public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
-{
-	// Decrease taser cooldown for each player
-	for (int i = 1; i <= MaxClients; i++)
-	{
-		if (taserCooldown[i] > 0)
-		{
-			taserCooldown[i]--;
-		}
-	}
-
-	return Plugin_Continue;
 }
 
 public void OnPluginEnd()
