@@ -232,11 +232,11 @@ public int getWeaponMoney(int client, const char[] itemName)
 	}
 	else if (strcmp(itemName, "item_kevlar") == 0)
 	{
-		return CS_GetWeaponPrice(client, CSWeapon_KEVLAR, false);
+		return CS_GetWeaponPrice(client, CSWeapon_KEVLAR, true);
 	}
 	else if (strcmp(itemName, "item_assaultsuit") == 0)
 	{
-		return CS_GetWeaponPrice(client, CSWeapon_ASSAULTSUIT, false);
+		return CS_GetWeaponPrice(client, CSWeapon_ASSAULTSUIT, true);
 	}
 	else if (strcmp(itemName, "item_defuser") == 0)
 	{
