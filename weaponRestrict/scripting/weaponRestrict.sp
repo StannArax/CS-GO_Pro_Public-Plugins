@@ -88,7 +88,14 @@ public void giveItemToPlayer(int client, const char[] item)
 	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 
 	// Give the item to the player
-	GivePlayerItem(client, item);
+	if (strcmp(item, "weapon_kevlar"))
+	{
+		GivePlayerItem(client, "item_kevlar");
+	}
+
+	else if (strcmp(item, "weapon_assaultsuit")) {
+		GivePlayerItem(client, "item_assaultsuit");
+	}
 
 	// Deduct money from player's account
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
@@ -273,7 +280,9 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 			whoUsedTaser[i] = -1;
 		}
 	}
-
+	char message[128];
+	Format(message, sizeof(message), "%s Team needs to have more than 2 players!", GetTeamScore(2) + GetTeamScore(3));
+	PrintToChatAll(message);
 	return Plugin_Continue;
 }
 
