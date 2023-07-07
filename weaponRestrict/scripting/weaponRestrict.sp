@@ -33,7 +33,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		if (strcmp(weapon, "nova") == 0 || strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0)
 		{
 			char message[128];
-			Format(message, sizeof(message), "You cannot buy this weapon! %s y", weapon);
+			Format(message, sizeof(message), "You cannot buy this weapon!y %s ", weapon);
 			PrintToChat(client, message);
 		}
 		else if (GetTeamClientCount(GetClientTeam(client)) <= 3)
@@ -86,7 +86,7 @@ public void giveItemToPlayer(int client, const char[] item)
 	int	 weapon_money = getWeaponMoney(client, item);
 	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 	char message[128];
-	Format(message, sizeof(message), "You cannot buy this weapon! %d x", weapon_money);
+	Format(message, sizeof(message), "You cannot buy this weapon!x %d ", weapon_money);
 	PrintToChat(client, message);
 	GivePlayerItem(client, item);
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
