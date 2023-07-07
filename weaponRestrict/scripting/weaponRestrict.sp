@@ -4,93 +4,48 @@
 #pragma newdecls required
 #pragma semicolon 1
 
-
 public Plugin myinfo =
 {
-	name = "weaponRestrict",
-	author = "StannArax",
+	name		= "weaponRestrict",
+	author		= "StannArax",
 	description = "Restricts weapons",
-	version = "1.0.0",
-	url = "https://github.com/StannArax/weaponRestrict"
+	version		= "1.0.0",
+	url			= "https://github.com/StannArax/weaponRestrict"
 };
 
-
-public Action Event_PlayerSpawn(Handle event, const char[] name, bool dontBroadcast)
+public void OnPluginStart()
 {
-    int client = GetClientOfUserId(GetEventInt(event, "userid"));
-    char weapon[40];
-    GetEventString(event, "weapon", weapon, sizeof(weapon));
+	PrintToServer("Weapon Restriction Plugin Has Been Loaded Successfully");
+}
 
-    if (stricmp(weapon, "weapon_zeus") == 0)
-    {
-        // Zeus should be given to one player per half
-        if (GetPlayerCount() % 2 == 1)
-        {
-            StripPlayerWeapons(client);
-            GivePlayerItem(client, "weapon_zeus");
-        }
-        else
-        {
-            StripWeapon(client, "weapon_zeus");
-        }
-    }
-    else if (stricmp(weapon, "weapon_pumpshotgun") == 0)
-    {
-        // Pump shotguns should be given to a maximum of four players per team
-        if (GetTeamNum(client) == 2 && GetPlayersOnTeam(2) > 4)
-        {
-            StripPlayerWeapons(client);
-            GivePlayerItem(client, "weapon_pumpshotgun");
-        }
-        else if (GetTeamNum(client) == 3 && GetPlayersOnTeam(3) > 4)
-        {
-            StripPlayerWeapons(client);
-            GivePlayerItem(client, "weapon_pumpshotgun");
-        }
-        else
-        {
-            StripWeapon(client, "weapon_pumpshotgun");
-        }
-    }
-    else if (stricmp(weapon, "weapon_awp") == 0)
-    {
-        // AWP should be given to a maximum of two players per team
-        if (GetTeamNum(client) == 2 && GetPlayersOnTeam(2) > 2)
-        {
-            StripPlayerWeapons(client);
-            GivePlayerItem(client, "weapon_awp");
-        }
-        else if (GetTeamNum(client) == 3 && GetPlayersOnTeam(3) > 2)
-        {
-            StripPlayerWeapons(client);
-            GivePlayerItem(client, "weapon_awp");
-        }
-        else
-        {
-            StripWeapon(client, "weapon_awp");
-        }
-    }
-    else if (stricmp(weapon, "weapon_p90") == 0)
-    {
-        // P90 should be given to a maximum of four players per team
-        if (GetTeamNum(client) == 2 && GetPlayersOnTeam(2) > 4)
-        {
-            StripPlayerWeapons(client);
-            GivePlayerItem(client, "weapon_p90");
-        }
-        else if (GetTeamNum(client) == 3 && GetPlayersOnTeam(3) > 4)
-        {
-            StripPlayerWeapons(client);
-            GivePlayerItem(client, "weapon_p90");
-        }
-        else
-        {
-            StripWeapon(client, "weapon_p90");
-        }
-    }
+public Action CS_OnBuyCommand(int client, const char[] weapon)
+{
+	if (!IsClientInGame(client)) { return Plugin_Handled; }
+	else {
+		if (strcmp(weapon, "weapon_nova") == 0 || strcmp(weapon, "weapon_xm1014") == 0 || strcmp(weapon, "weapon_mag7") == 0 || strcmp(weapon, "weapon_sawedoff") == 0)
+		{
+			char message[128];
+			Format(message, sizeof(message), "You cannot buy this weapon! %s", weapon);
+			PrintToChat(client, message);
+		}
+		else if (GetTeamClientCount(GetClientTeam(client)) <= 3)
+		{
+			char clientTeam[32];
 
-    // Disable player's buy menu
-    StripPlayerMenu(client);
+			if (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_awp") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_scar20") == 0 || strcmp(weapon, "weapon_bizon") == 0)
+			{
+				char message[128];
+				Format(message, sizeof(message), "%s Team needs to have more than 2 players!", clientTeam);
+				PrintToChat(client, message);
+			}
+			else {
+				GivePlayerItem(client, weapon);
+			}
+		}
+		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
+			GivePlayerItem(client, weapon);
+		}
+	}
 
-    return Plugin_Continue;
+	return Plugin_Handled;
 }
