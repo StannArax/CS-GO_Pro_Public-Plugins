@@ -34,16 +34,27 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	}
 	else
 	{
-		if (strcmp(weapon, "nova") == 0 || strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0)
+		if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0)
+		{
+			char message[128];
+			Format(message, sizeof(message), "Kevlar or Assaultsuit");
+			PrintToChat(client, message);
+
+			char item[128];
+			Format(item, sizeof(item), "item_%s", weapon);
+			giveItemToPlayer(client, item);
+		}
+		else if (strcmp(weapon, "nova") == 0 || strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0)
 		{
 			char message[128];
 			Format(message, sizeof(message), "You cannot buy this weapon!y %s ", weapon);
 			PrintToChat(client, message);
 		}
-		else if (strcmp(weapon, "m249") == 0 || strcmp(weapon, "negev") == 0 || strcmp(weapon, "awp") == 0 || strcmp(weapon, "p90") == 0 || strcmp(weapon, "g3sg1") == 0 || strcmp(weapon, "scar20") == 0 || strcmp(weapon, "bizon") == 0) {
+		else if (GetTeamClientCount(GetClientTeam(client)) <= 3)
+		{
 			char clientTeam[32];
 
-			if (GetTeamClientCount(GetClientTeam(client)) <= 3)
+			if (strcmp(weapon, "m249") == 0 || strcmp(weapon, "negev") == 0 || strcmp(weapon, "awp") == 0 || strcmp(weapon, "p90") == 0 || strcmp(weapon, "g3sg1") == 0 || strcmp(weapon, "scar20") == 0 || strcmp(weapon, "bizon") == 0)
 			{
 				char message[128];
 				Format(message, sizeof(message), "%s Team needs to have more than 2 players!", clientTeam);
@@ -54,6 +65,11 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				Format(item, sizeof(item), "weapon_%s", weapon);
 				giveItemToPlayer(client, item);
 			}
+		}
+		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
+			char item[128];
+			Format(item, sizeof(item), "weapon_%s", weapon);
+			giveItemToPlayer(client, item);
 		}
 		else if (strcmp(weapon, "taser")) {
 			for (int i = 0; i < sizeof(whoUsedTaser); i++)
@@ -73,16 +89,6 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 					currentIndex++;
 				}
 			}
-		}
-		else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0)
-		{
-			char message[128];
-			Format(message, sizeof(message), "Kevlar or Assaultsuit");
-			PrintToChat(client, message);
-
-			char item[128];
-			Format(item, sizeof(item), "item_%s", weapon);
-			giveItemToPlayer(client, item);
 		}
 	}
 
