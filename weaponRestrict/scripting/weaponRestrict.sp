@@ -56,11 +56,6 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				giveItemToPlayer(client, item);
 			}
 		}
-		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
-			char item[128];
-			Format(item, sizeof(item), "weapon_%s", weapon);
-			giveItemToPlayer(client, item);
-		}
 		else if (strcmp(weapon, "taser")) {
 			for (int i = 0; i < sizeof(whoUsedTaser); i++)
 			{
@@ -88,6 +83,11 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 			char item[128];
 			Format(item, sizeof(item), "item_%s", weapon);
+			giveItemToPlayer(client, item);
+		}
+		else if (GetTeamClientCount(GetClientTeam(client)) > 3) {
+			char item[128];
+			Format(item, sizeof(item), "weapon_%s", weapon);
 			giveItemToPlayer(client, item);
 		}
 	}
