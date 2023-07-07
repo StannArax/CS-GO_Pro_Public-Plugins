@@ -33,7 +33,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		if (strcmp(weapon, "nova") == 0 || strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0)
 		{
 			char message[128];
-			Format(message, sizeof(message), "You cannot buy this weapon! %s", weapon);
+			Format(message, sizeof(message), "You cannot buy this weapon! %s y", weapon);
 			PrintToChat(client, message);
 		}
 		else if (GetTeamClientCount(GetClientTeam(client)) <= 3)
