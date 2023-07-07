@@ -24,7 +24,7 @@ int currentIndex = 0;
 
 public Action CS_OnBuyCommand(int client, const char[] weapon)
 {
-	if (!IsClientInGame(client)) { return Plugin_Handled; }
+	if (!IsClientInGame(client)) { return Plugin_Continue; PrintToConsole(client, "false"); }
 	else {
 		if (strcmp(weapon, "weapon_nova") == 0 || strcmp(weapon, "weapon_xm1014") == 0 || strcmp(weapon, "weapon_mag7") == 0 || strcmp(weapon, "weapon_sawedoff") == 0)
 		{
