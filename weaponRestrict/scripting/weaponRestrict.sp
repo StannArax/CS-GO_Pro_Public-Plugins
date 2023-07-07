@@ -91,17 +91,30 @@ public void giveItemToPlayer(int client, const char[] item)
 	if (strcmp(item, "weapon_kevlar"))
 	{
 		GivePlayerItem(client, "item_kevlar");
+
+		char message[128];
+		Format(message, sizeof(message), "%s hahx");
+		PrintToChatAll(message);
 	}
 
 	else if (strcmp(item, "weapon_assaultsuit")) {
 		GivePlayerItem(client, "item_assaultsuit");
+		char message[128];
+		Format(message, sizeof(message), "%s hahy");
+		PrintToChatAll(message);
 	}
 
 	else if (strcmp(item, "weapon_defuser")) {
 		GivePlayerItem(client, "item_defuser");
+		char message[128];
+		Format(message, sizeof(message), "%s hahz");
+		PrintToChatAll(message);
 	}
 	else {
 		GivePlayerItem(client, item);
+		char message[128];
+		Format(message, sizeof(message), "%s hahp");
+		PrintToChatAll(message);
 	}
 
 	// Deduct money from player's account
