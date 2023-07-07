@@ -83,11 +83,8 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
-	int	 weapon_money = getWeaponMoney(client, item);
-	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
-	char message[128];
-	Format(message, sizeof(message), "You cannot buy this weapon!x %d ", weapon_money);
-	PrintToChat(client, message);
+	int weapon_money = getWeaponMoney(client, item);
+	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 	GivePlayerItem(client, item);
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
 }
@@ -232,11 +229,17 @@ public int getWeaponMoney(int client, const char[] itemName)
 	}
 	else if (strcmp(itemName, "item_kevlar") == 0)
 	{
-		return CS_GetWeaponPrice(client, CSWeapon_KEVLAR, true);
+		char message[128];
+		Format(message, sizeof(message), "KEVLAR");
+		PrintToChat(client, message);
+		return CS_GetWeaponPrice(client, CSWeapon_KEVLAR, false);
 	}
 	else if (strcmp(itemName, "item_assaultsuit") == 0)
 	{
-		return CS_GetWeaponPrice(client, CSWeapon_ASSAULTSUIT, true);
+		char message[128];
+		Format(message, sizeof(message), "assaultsuit");
+		PrintToChat(client, message);
+		return CS_GetWeaponPrice(client, CSWeapon_ASSAULTSUIT, false);
 	}
 	else if (strcmp(itemName, "item_defuser") == 0)
 	{
