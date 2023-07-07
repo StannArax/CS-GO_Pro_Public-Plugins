@@ -22,7 +22,7 @@ public void OnPluginStart()
 
 public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	if (roundCount == 2){
+	if (roundCount == 3){
 		for (int i = 1; i < MaxClients; i++)
 		{
 			if (IsClientInGame(i) && (GetClientTeam(i) == 2 || GetClientTeam(i) == 3))
@@ -31,7 +31,7 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 			}
 		}
 	}
-	else if (roundCount > 2)
+	else if (roundCount > 3)
 	{
 		for (int i = 1; i < MaxClients; i++)
 		{
