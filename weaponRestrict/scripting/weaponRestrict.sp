@@ -25,11 +25,15 @@ int currentIndex = 0;
 
 public Action CS_OnBuyCommand(int client, const char[] weapon)
 {
+	char message[128];
+	Format(message, sizeof(message), "Kevlar  or Assaultsuit %s", weapon);
+	PrintToChat(client, message);
 	if (!IsClientInGame(client))
 	{
 		return Plugin_Continue;
 	}
-	else {
+	else
+	{
 		if (strcmp(weapon, "nova") == 0 || strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0)
 		{
 			char message[128];
@@ -76,9 +80,10 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				}
 			}
 		}
-		else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0) {
+		else if (strcmp(weapon, "kevlar") || strcmp(weapon, "assaultsuit"))
+		{
 			char message[128];
-			Format(message, sizeof(message), "Kevlar or Assaultsuit");
+			Format(message, sizeof(message), "Kevlar  or Assaultsuit");
 			PrintToChat(client, message);
 			char item[128];
 			Format(item, sizeof(item), "item_%s", weapon);
