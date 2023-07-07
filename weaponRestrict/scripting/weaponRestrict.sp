@@ -97,11 +97,18 @@ public void giveItemToPlayer(int client, const char[] item)
 		GivePlayerItem(client, "item_assaultsuit");
 	}
 
+	else if (strcmp(item, "weapon_defuser")) {
+		GivePlayerItem(client, "item_defuser");
+	}
+	else {
+		GivePlayerItem(client, item);
+	}
+
 	// Deduct money from player's account
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
 
 	// Check if the player already has kevlar or the item costs 1000 money
-	if (GetClientArmor(client) == 100 || weapon_money == 1000)
+	if (GetClientArmor(client) == 100 && weapon_money == 1000)
 	{
 		char message[128];
 		Format(message, sizeof(message), "You already have kevlar, bought helmet");
@@ -272,7 +279,7 @@ public int getWeaponMoney(int client, const char[] itemName)
 
 public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	if (GetTeamScore(2) + GetTeamScore(3) == 15)
+	if (GetTeamScore(2) + GetTeamScore(3) > 15)
 	{
 		currentIndex = 0;
 		for (int i = 0; i < sizeof(whoUsedTaser); i++)
@@ -280,7 +287,7 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 			whoUsedTaser[i] = -1;
 		}
 		char message[128];
-		Format(message, sizeof(message), "%s Team needs to have more than 2 players!", GetTeamScore(2) + GetTeamScore(3));
+		Format(message, sizeof(message), "%s hah", GetTeamScore(2) + GetTeamScore(3));
 		PrintToChatAll(message);
 	}
 	return Plugin_Continue;
