@@ -27,7 +27,7 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 		{
 			if (IsClientInGame(i) && (GetClientTeam(i) == 2 || GetClientTeam(i) == 3))
 			{
-				GivePlayerItem(i, "item_assaultsuit");
+				GivePlayerItem(i, "item_kevlar");
 			}
 		}
 	}
@@ -38,8 +38,6 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 			if (IsClientInGame(i) && (GetClientTeam(i) == 2 || GetClientTeam(i) == 3))
 			{
 				GivePlayerItem(i, "item_assaultsuit");
-				GivePlayerItem(i, "item_helmet");
-				PrintToServer("roundCount: %d", roundCount);
 			}
 		}
 	}
