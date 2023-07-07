@@ -76,6 +76,11 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 				}
 			}
 		}
+		else if (strcmp(weapon, "kevlar") || strcmp(weapon, "assaultsuit")) {
+			char item[128];
+			Format(item, sizeof(item), "item_%s", weapon);
+			giveItemToPlayer(client, item);
+		}
 	}
 
 	return Plugin_Handled;
@@ -87,6 +92,13 @@ public void giveItemToPlayer(int client, const char[] item)
 	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 	GivePlayerItem(client, item);
 	SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
+	if (GetClientArmor(client) == 100)
+	{
+		char message[128];
+		Format(message, sizeof(message), "You already have kevlar, bought helmet");
+		PrintToChat(client, message);
+		SetEntProp(client, Prop_Send, "m_iAccount", player_money + 650);
+	}
 }
 
 public int getWeaponMoney(int client, const char[] itemName)
