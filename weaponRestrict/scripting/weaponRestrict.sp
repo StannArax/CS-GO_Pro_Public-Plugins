@@ -111,7 +111,7 @@ public bool isClientUsedTaserBefore(int client)
 	return false;
 }
 
-public int getClientsWeapon(char[] itemName)
+public int getClientsWeapon(const char[] itemName)
 {
 	if (strcmp(itemName, "weapon_glock") || strcmp(itemName, "weapon_elite") || strcmp(itemName, "weapon_p250") || strcmp(itemName, "weapon_tec9") || strcmp(itemName, "weapon_cz75a") || strcmp(itemName, "weapon_deagle") || strcmp(itemName, "weapon_revolver") || strcmp(itemName, "weapon_usp_silencer") || strcmp(itemName, "weapon_hkp2000") || strcmp(itemName, "weapon_fiveseven"))
 	{
@@ -129,7 +129,7 @@ public void giveItemToPlayer(int client, const char[] item)
 	char weaponName[64];
 	GetClientWeapon(client, weaponName, sizeof(weaponName));
 	PrintToChat(client, weaponName);
-	
+
 	if (player_money >= weapon_money)
 	{
 		if (GetClientArmor(client) == 100 && strcmp(item, "item_assaultsuit") == 0)
@@ -138,7 +138,16 @@ public void giveItemToPlayer(int client, const char[] item)
 			SetEntProp(client, Prop_Send, "m_iAccount", player_money - (weapon_money - 650));
 		}
 		else {
-			GivePlayerItem(client, item);
+			if (getClientsWeapon(item) == 1 && GetPlayerWeaponSlot(client, 1) > 0)
+			{
+				CS_DropWeapon(client, 1, false);
+				GivePlayerItem(client, item);
+			}
+			else if (getClientsWeapon(item) == 2 && GetPlayerWeaponSlot(client, 2) > 0)
+			{
+				CS_DropWeapon(client, 2, false);
+				GivePlayerItem(client, item);
+			}
 			SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
 		}
 	}
