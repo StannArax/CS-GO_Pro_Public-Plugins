@@ -127,13 +127,16 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 	char message[128];
 	Format(message, sizeof(message), "%d", roundCounter);
 	PrintToChatAll(message);
+
 	if (strcmp(message, "16") == 0)
 	{
 		for (int i = 0; i < 20; i++)
 		{
 			whoUsedTaser[i] = 0;
 		}
+
 		currentIndex = 0;
+
 		char messagex[128];
 		Format(messagex, sizeof(messagex), "Half-Ended: %d", roundCounter);
 		PrintToChatAll(messagex);
