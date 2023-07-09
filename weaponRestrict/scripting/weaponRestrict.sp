@@ -126,9 +126,6 @@ public void giveItemToPlayer(int client, const char[] item)
 {
 	int	 weapon_money = getWeaponMoney(client, item);
 	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
-	char weaponName[64];
-	GetClientWeapon(client, weaponName, sizeof(weaponName));
-	PrintToChat(client, weaponName);
 
 	if (player_money >= weapon_money)
 	{
