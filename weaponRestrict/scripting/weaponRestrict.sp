@@ -91,6 +91,10 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
+	char messagex[128];
+	Format(messagex, sizeof(messagex), "Undefined Weapon: %s", item);
+	PrintToChat(client, messagex);
+
 	int weapon_money = getWeaponMoney(client, item);
 	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 
