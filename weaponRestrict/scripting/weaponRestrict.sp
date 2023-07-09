@@ -124,6 +124,9 @@ public void giveItemToPlayer(int client, const char[] item)
 
 public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
+	char message[128];
+	Format(message, sizeof(message), "round: %s", roundCounter);
+	PrintToChatAll(message);
 	roundCounter++;
 	if (roundCounter == 16)
 	{
