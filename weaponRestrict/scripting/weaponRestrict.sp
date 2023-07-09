@@ -34,13 +34,13 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	{
 		return Plugin_Continue;
 	}
-	else if (strcmp(weapon, "weapon_xm1014") == 0 || strcmp(weapon, "weapon_mag7") == 0 || strcmp(weapon, "weapon_sawedoff") == 0 || strcmp(weapon, "weapon_nova") == 0)
+	else if (strcmp(weapon, "xm1014") == 0 || strcmp(weapon, "mag7") == 0 || strcmp(weapon, "sawedoff") == 0 || strcmp(weapon, "nova") == 0)
 	{
 		char message[128];
 		Format(message, sizeof(message), "You cannot buy this weapon: %s", weapon);
 		PrintToChat(client, message);
 	}
-	else if (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_bizon") == 0 || strcmp(weapon, "weapon_awp") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_scar20") == 0)
+	else if (strcmp(weapon, "m249") == 0 || strcmp(weapon, "negev") == 0 || strcmp(weapon, "p90") == 0 || strcmp(weapon, "bizon") == 0 || strcmp(weapon, "awp") == 0 || strcmp(weapon, "g3sg1") == 0 || strcmp(weapon, "scar20") == 0)
 	{
 		if (GetTeamClientCount(2) + GetTeamClientCount(3) < 6)
 		{
@@ -49,10 +49,10 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			PrintToChat(client, message);
 		}
 		else {
-			giveItemToPlayer(client, weapon);
+			giveItemToPlayer(client, formattedWeapon);
 		}
 	}
-	else if (strcmp(weapon, "weapon_taser") == 0)
+	else if (strcmp(weapon, "taser") == 0)
 	{
 		for (int i = 1; i <= MaxClients; i++)
 		{
@@ -65,13 +65,13 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			else {
 				whoUsedTaser[currentIndex] = GetClientSerial(client);
 				currentIndex++;
-				giveItemToPlayer(client, weapon);
+				giveItemToPlayer(client, formattedWeapon);
 			}
 		}
 	}
-	else if (strcmp(weapon, "weapon_kevlar") == 0 || strcmp(weapon, "weapon_assaultsuit") == 0)
+	else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0)
 	{
-		if (strcmp(weapon, "weapon_kevlar") == 0)
+		if (strcmp(weapon, "kevlar") == 0)
 		{
 			giveItemToPlayer(client, "item_kevlar");
 		}
