@@ -69,11 +69,14 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			}
 		}
 	}
-	else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0)
+	else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0 || strcmp(weapon, "defuser") == 0)
 	{
 		if (strcmp(weapon, "kevlar") == 0)
 		{
 			giveItemToPlayer(client, "item_kevlar");
+		}
+		else if(strcmp(weapon, "defuser") == 0){
+			giveItemToPlayer(client, "item_defuser");
 		}
 		else {
 			giveItemToPlayer(client, "item_assaultsuit");
@@ -81,9 +84,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	}
 	else
 	{
-		char message[128];
-		Format(message, sizeof(message), "Undefined Weapon: %s", weapon);
-		PrintToChat(client, message);
+		giveItemToPlayer(client, formattedWeapon);
 	}
 
 	return Plugin_Handled;
@@ -91,10 +92,6 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
-	char messagex[128];
-	Format(messagex, sizeof(messagex), "Undefined Weaponx: %s", item);
-	PrintToChat(client, messagex);
-
 	int weapon_money = getWeaponMoney(client, item);
 	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 
