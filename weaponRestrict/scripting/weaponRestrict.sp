@@ -127,7 +127,7 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 	char message[128];
 	Format(message, sizeof(message), "%d", roundCounter);
 	PrintToChatAll(message);
-	if (strcmp(message, "16"))
+	if (strcmp(message, "16") == 0)
 	{
 		for (int i = 0; i < 20; i++)
 		{
