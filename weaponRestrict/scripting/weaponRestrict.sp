@@ -111,14 +111,28 @@ public bool isClientUsedTaserBefore(int client)
 	return false;
 }
 
+public int getClientsWeapon(char[] itemName)
+{
+	if (strcmp(itemName, "weapon_glock") || strcmp(itemName, "weapon_elite") || strcmp(itemName, "weapon_p250") || strcmp(itemName, "weapon_tec9") || strcmp(itemName, "weapon_cz75a") || strcmp(itemName, "weapon_deagle") || strcmp(itemName, "weapon_revolver") || strcmp(itemName, "weapon_usp_silencer") || strcmp(itemName, "weapon_hkp2000") || strcmp(itemName, "weapon_fiveseven"))
+	{
+		return 1;
+	}
+	else if (strcmp(itemName, "weapon_nova") || strcmp(itemName, "weapon_xm1014") || strcmp(itemName, "weapon_xm1014") || strcmp(itemName, "weapon_m249") || strcmp(itemName, "weapon_negev") || strcmp(itemName, "weapon_mag7") || strcmp(itemName, "weapon_mac10") || strcmp(itemName, "weapon_mp7") || strcmp(itemName, "weapon_ump45") || strcmp(itemName, "weapon_p90") || strcmp(itemName, "weapon_bizon") || strcmp(itemName, "weapon_galilar") || strcmp(itemName, "weapon_ak47") || strcmp(itemName, "weapon_ssg08") || strcmp(itemName, "weapon_sg556") || strcmp(itemName, "weapon_awp") || strcmp(itemName, "weapon_g3sg1") || strcmp(itemName, "weapon_famas") || strcmp(itemName, "weapon_m4a1") || strcmp(itemName, "weapon_m4a1_silencer") || strcmp(itemName, "weapon_aug") || strcmp(itemName, "weapon_scar20")) {
+		return 2;
+	}
+}
+
 public void giveItemToPlayer(int client, const char[] item)
 {
-	int weapon_money = getWeaponMoney(client, item);
-	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
-
+	int	 weapon_money = getWeaponMoney(client, item);
+	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
+	char weaponName[64];
+	GetClientWeapon(client, weaponName, sizeof(weaponName));
+	PrintToChat(client, weaponName);
+	
 	if (player_money >= weapon_money)
 	{
-		if (GetClientArmor(client) == 100 || strcmp(item, "item_assaultsuit") == 0)
+		if (GetClientArmor(client) == 100 && strcmp(item, "item_assaultsuit") == 0)
 		{
 			GivePlayerItem(client, item);
 			SetEntProp(client, Prop_Send, "m_iAccount", player_money - (weapon_money - 650));
