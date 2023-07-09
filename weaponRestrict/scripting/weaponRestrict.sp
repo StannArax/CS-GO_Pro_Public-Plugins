@@ -124,8 +124,10 @@ public void giveItemToPlayer(int client, const char[] item)
 
 public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	PrintToChatAll("Round_start");
 	roundCounter++;
+	char message[128];
+	Format(message, sizeof(message), "round-start: %d", roundCounter);
+	PrintToChatAll(message);
 	if (roundCounter == 16)
 	{
 		for (int i = 1; i <= MaxClients; i++)
@@ -133,6 +135,9 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 			whoUsedTaser[i] = 0;
 		}
 		currentIndex = 0;
+		char messagex[128];
+		Format(messagex, sizeof(messagex), "Half-Ended: %d", roundCounter);
+		PrintToChatAll(messagex);
 	}
 
 	return Plugin_Continue;
