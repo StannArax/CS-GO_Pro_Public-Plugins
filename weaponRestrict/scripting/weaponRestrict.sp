@@ -82,6 +82,9 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	}
 	else
 	{
+		char message[128];
+		Format(message, sizeof(message), "here is worked: %s", weapon);
+		PrintToChat(client, message);
 		giveItemToPlayer(client, formattedWeapon);
 	}
 
