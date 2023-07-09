@@ -76,7 +76,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		{
 			giveItemToPlayer(client, "item_kevlar");
 		}
-		else if(strcmp(weapon, "defuser") == 0){
+		else if (strcmp(weapon, "defuser") == 0) {
 			giveItemToPlayer(client, "item_defuser");
 		}
 		else {
@@ -98,8 +98,15 @@ public void giveItemToPlayer(int client, const char[] item)
 
 	if (player_money >= weapon_money)
 	{
-		GivePlayerItem(client, item);
-		SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
+		if (GetClientArmor(client) == 100)
+		{
+			GivePlayerItem(client, item);
+			SetEntProp(client, Prop_Send, "m_iAccount", player_money - (weapon_money - 650));
+		}
+		else {
+			GivePlayerItem(client, item);
+			SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
+		}
 	}
 }
 
