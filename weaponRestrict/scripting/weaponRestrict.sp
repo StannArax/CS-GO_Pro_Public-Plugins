@@ -45,7 +45,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		if (GetTeamClientCount(2) + GetTeamClientCount(3) < 6)
 		{
 			char message[128];
-			Format(message, sizeof(message), "You cannot buy this weapon until both teams have minimum 6 players: %s", weapon);
+			Format(message, sizeof(message), "You can not buy this weapon until both teams have minimum 6 players: %s", weapon);
 			PrintToChat(client, message);
 		}
 		else {
@@ -56,7 +56,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		if (GetTeamClientCount(GetClientTeam(client)) < 2)
 		{
 			char message[128];
-			Format(message, sizeof(message), "You cannot buy this weapon until both teams have minimum 6 players: %s", weapon);
+			Format(message, sizeof(message), "You can not buy this weapon while you are only in your team: %s", weapon);
 			PrintToChat(client, message);
 		}
 		else {
