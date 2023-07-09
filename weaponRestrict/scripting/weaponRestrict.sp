@@ -64,7 +64,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			char message[128];
 			Format(message, sizeof(message), "You can not buy this weapon on every half: %s", weapon);
 			PrintToChat(client, message);
-			return 0;
+			return Plugin_Handled;
 		}
 	}
 	else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0 || strcmp(weapon, "defuser") == 0)
