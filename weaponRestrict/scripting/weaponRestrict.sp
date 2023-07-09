@@ -99,27 +99,6 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	return Plugin_Handled;
 }
 
-public int whichWeapon(char[] itemName)
-{
-	char message[128];
-	Format(message, sizeof(message), "You can buy this weapon on every half: %s", itemName);
-	PrintToChatAll(message);
-
-	if (strcmp(itemName, "weapon_glock") == 0 || strcmp(itemName, "weapon_elite") == 0 || strcmp(itemName, "weapon_p250") == 0 || strcmp(itemName, "weapon_tec9") == 0 || strcmp(itemName, "weapon_cz75a") == 0 || strcmp(itemName, "weapon_deagle") == 0 || strcmp(itemName, "weapon_revolver") == 0 || strcmp(itemName, "weapon_usp_silencer") == 0 || strcmp(itemName, "weapon_hkp2000") == 0 || strcmp(itemName, "weapon_fiveseven") == 0)
-	{
-		return 1;
-	}
-	else if (strcmp(itemName, "weapon_nova") == 0 || strcmp(itemName, "weapon_xm1014") == 0 || strcmp(itemName, "weapon_sawedoff") == 0 || strcmp(itemName, "weapon_m249") == 0 || strcmp(itemName, "weapon_negev") == 0 || strcmp(itemName, "weapon_mag7") == 0) {
-		return 2;
-	}
-	else if (strcmp(itemName, "weapon_mac10") == 0 || strcmp(itemName, "weapon_mp7") == 0 || strcmp(itemName, "weapon_ump45") == 0 || strcmp(itemName, "weapon_p90") == 0 || strcmp(itemName, "weapon_bizon") == 0 || strcmp(itemName, "weapon_mp9") == 0) {
-		return 2;
-	}
-	else if (strcmp(itemName, "weapon_galilar") == 0 || strcmp(itemName, "weapon_ak47") == 0 || strcmp(itemName, "weapon_sg556") == 0 || strcmp(itemName, "weapon_g3sg1") == 0 || strcmp(itemName, "weapon_famas") == 0 || strcmp(itemName, "weapon_m4a4") == 0 || strcmp(itemName, "weapon_m4a1_silencer") == 0 || strcmp(itemName, "weapon_aug") == 0 || strcmp(itemName, "weapon_scar20") == 0) {
-		return 2;
-	}
-}
-
 public bool isClientUsedTaserBefore(int client)
 {
 	for (int i = 0; i < 20; i++)
@@ -134,13 +113,8 @@ public bool isClientUsedTaserBefore(int client)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
-	char clientsWeapon[64];
-	GetClientWeapon(client, clientsWeapon, sizeof(clientsWeapon));
-
-	int clientsWeaponID = whichWeapon(clientsWeapon);
-
-	int weapon_money	= getWeaponMoney(client, item);
-	int player_money	= GetEntProp(client, Prop_Send, "m_iAccount");
+	int weapon_money = getWeaponMoney(client, item);
+	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 
 	if (player_money >= weapon_money)
 	{
@@ -150,16 +124,6 @@ public void giveItemToPlayer(int client, const char[] item)
 			SetEntProp(client, Prop_Send, "m_iAccount", player_money - (weapon_money - 650));
 		}
 		else {
-			if (clientsWeaponID == 1)
-			{
-				CS_DropWeapon(client, 1, false);
-				GivePlayerItem(client, item);
-			}
-			else if (clientsWeaponID == 2)
-			{
-				CS_DropWeapon(client, 2, false);
-				GivePlayerItem(client, item);
-			}
 			GivePlayerItem(client, item);
 			SetEntProp(client, Prop_Send, "m_iAccount", player_money - weapon_money);
 		}
