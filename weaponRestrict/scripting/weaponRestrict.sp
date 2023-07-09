@@ -54,20 +54,17 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	}
 	else if (strcmp(weapon, "taser") == 0)
 	{
-		for (int i = 1; i <= MaxClients; i++)
+		if (!isClientUsedTaserBefore(client))
 		{
-			if (GetClientSerial(client) == whoUsedTaser[i])
-			{
-				char message[128];
-				Format(message, sizeof(message), "You can not buy this weapon on every half: %s", weapon);
-				PrintToChat(client, message);
-				return 0;
-			}
-			else {
-				whoUsedTaser[currentIndex] = GetClientSerial(client);
-				currentIndex++;
-				giveItemToPlayer(client, formattedWeapon);
-			}
+			whoUsedTaser[currentIndex] = GetClientSerial(client);
+			currentIndex++;
+			giveItemToPlayer(client, formattedWeapon);
+		}
+		else {
+			char message[128];
+			Format(message, sizeof(message), "You can not buy this weapon on every half: %s", weapon);
+			PrintToChat(client, message);
+			return 0;
 		}
 	}
 	else if (strcmp(weapon, "kevlar") == 0 || strcmp(weapon, "assaultsuit") == 0 || strcmp(weapon, "defuser") == 0)
@@ -89,6 +86,18 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	}
 
 	return Plugin_Handled;
+}
+
+public bool isClientUsedTaserBefore(int client)
+{
+	for (int i = 0; i < 20; i++)
+	{
+		if (GetClientSerial(client) == whoUsedTaser[i])
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 public void giveItemToPlayer(int client, const char[] item)
