@@ -26,6 +26,10 @@ int roundCounter = 0;
 
 public Action CS_OnBuyCommand(int client, const char[] weapon)
 {
+	char formattedWeapon[30];
+
+	Format(formattedWeapon, sizeof(formattedWeapon), "weapon_%s", weapon);
+
 	if (!IsClientInGame(client))
 	{
 		return Plugin_Continue;
@@ -36,7 +40,8 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		Format(message, sizeof(message), "You cannot buy this weapon: %s", weapon);
 		PrintToChat(client, message);
 	}
-	else if (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_bizon") == 0 || strcmp(weapon, "weapon_awp") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_scar20") == 0) {
+	else if (strcmp(weapon, "weapon_m249") == 0 || strcmp(weapon, "weapon_negev") == 0 || strcmp(weapon, "weapon_p90") == 0 || strcmp(weapon, "weapon_bizon") == 0 || strcmp(weapon, "weapon_awp") == 0 || strcmp(weapon, "weapon_g3sg1") == 0 || strcmp(weapon, "weapon_scar20") == 0)
+	{
 		if (GetTeamClientCount(2) + GetTeamClientCount(3) < 6)
 		{
 			char message[128];
@@ -47,7 +52,8 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			giveItemToPlayer(client, weapon);
 		}
 	}
-	else if (strcmp(weapon, "weapon_taser") == 0) {
+	else if (strcmp(weapon, "weapon_taser") == 0)
+	{
 		for (int i = 1; i <= MaxClients; i++)
 		{
 			if (GetClientSerial(client) == whoUsedTaser[i])
@@ -63,7 +69,8 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			}
 		}
 	}
-	else if (strcmp(weapon, "weapon_kevlar") == 0 || strcmp(weapon, "weapon_assaultsuit") == 0) {
+	else if (strcmp(weapon, "weapon_kevlar") == 0 || strcmp(weapon, "weapon_assaultsuit") == 0)
+	{
 		if (strcmp(weapon, "weapon_kevlar") == 0)
 		{
 			giveItemToPlayer(client, "item_kevlar");
@@ -72,7 +79,8 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			giveItemToPlayer(client, "item_assaultsuit");
 		}
 	}
-	else {
+	else
+	{
 		char message[128];
 		Format(message, sizeof(message), "Undefined Weapon: %s", weapon);
 		PrintToChat(client, message);
