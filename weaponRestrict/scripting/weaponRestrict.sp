@@ -82,9 +82,6 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 	}
 	else
 	{
-		char message[128];
-		Format(message, sizeof(message), "here is worked: %s", weapon);
-		PrintToChat(client, message);
 		giveItemToPlayer(client, formattedWeapon);
 	}
 
@@ -110,7 +107,7 @@ public void giveItemToPlayer(int client, const char[] item)
 
 	if (player_money >= weapon_money)
 	{
-		if (GetClientArmor(client) == 100)
+		if (GetClientArmor(client) == 100 || strcmp(item, "item_assaultsuit") == 0)
 		{
 			GivePlayerItem(client, item);
 			SetEntProp(client, Prop_Send, "m_iAccount", player_money - (weapon_money - 650));
@@ -126,7 +123,6 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
 	char message[128];
 	Format(message, sizeof(message), "%d", roundCounter);
-	PrintToChatAll(message);
 
 	if (strcmp(message, "16") == 0)
 	{
@@ -136,10 +132,6 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 		}
 
 		currentIndex = 0;
-
-		char messagex[128];
-		Format(messagex, sizeof(messagex), "Half-Ended: %d", roundCounter);
-		PrintToChatAll(messagex);
 	}
 
 	roundCounter++;
