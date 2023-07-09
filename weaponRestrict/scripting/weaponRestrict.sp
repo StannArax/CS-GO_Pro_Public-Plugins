@@ -62,7 +62,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 		}
 		else {
 			char message[128];
-			Format(message, sizeof(message), "You can not buy this weapon on every half: %s", weapon);
+			Format(message, sizeof(message), "You can buy this weapon on every half: %s", weapon);
 			PrintToChat(client, message);
 			return Plugin_Handled;
 		}
@@ -124,13 +124,12 @@ public void giveItemToPlayer(int client, const char[] item)
 
 public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	roundCounter++;
 	char message[128];
-	Format(message, sizeof(message), "round-start: %d", roundCounter);
+	Format(message, sizeof(message), "%d", roundCounter);
 	PrintToChatAll(message);
-	if (roundCounter == 16)
+	if (strcmp(message, "16"))
 	{
-		for (int i = 1; i <= MaxClients; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			whoUsedTaser[i] = 0;
 		}
@@ -140,6 +139,7 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 		PrintToChatAll(messagex);
 	}
 
+	roundCounter++;
 	return Plugin_Continue;
 }
 
