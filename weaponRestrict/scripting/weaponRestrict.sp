@@ -59,8 +59,9 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 			if (GetClientSerial(client) == whoUsedTaser[i])
 			{
 				char message[128];
-				Format(message, sizeof(message), "You can buy this weapon on every half: %s", weapon);
+				Format(message, sizeof(message), "You can not buy this weapon on every half: %s", weapon);
 				PrintToChat(client, message);
+				return 0;
 			}
 			else {
 				whoUsedTaser[currentIndex] = GetClientSerial(client);
