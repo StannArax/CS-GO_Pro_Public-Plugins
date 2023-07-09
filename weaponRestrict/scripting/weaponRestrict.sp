@@ -92,7 +92,7 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 public void giveItemToPlayer(int client, const char[] item)
 {
 	char messagex[128];
-	Format(messagex, sizeof(messagex), "Undefined Weapon: %s", item);
+	Format(messagex, sizeof(messagex), "Undefined Weaponx: %s", item);
 	PrintToChat(client, messagex);
 
 	int weapon_money = getWeaponMoney(client, item);
