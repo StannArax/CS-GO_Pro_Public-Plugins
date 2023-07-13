@@ -101,10 +101,9 @@ public Action CS_OnBuyCommand(int client, const char[] weapon)
 
 public bool isClientUsedTaserBefore(int client)
 {
-	int clientSerial = GetClientSerial(client);
-	for (int i = 0; i < currentIndex; i++)
+	for (int i = 0; i < 20; i++)
 	{
-		if (clientSerial == whoUsedTaser[i])
+		if (GetClientSerial(client) == whoUsedTaser[i])
 		{
 			return true;
 		}
@@ -114,12 +113,11 @@ public bool isClientUsedTaserBefore(int client)
 
 public int getClientsWeapon(const char[] itemName)
 {
-	if (strcmp(itemName, "weapon_glock") == 0 || strcmp(itemName, "weapon_elite") == 0 || strcmp(itemName, "weapon_p250") == 0 || strcmp(itemName, "weapon_tec9") == 0 || strcmp(itemName, "weapon_cz75a") == 0 || strcmp(itemName, "weapon_deagle") == 0 || strcmp(itemName, "weapon_revolver") == 0 || strcmp(itemName, "weapon_usp_silencer") == 0 || strcmp(itemName, "weapon_hkp2000") == 0 || strcmp(itemName, "weapon_fiveseven") == 0)
+	if (strcmp(itemName, "weapon_glock") || strcmp(itemName, "weapon_elite") || strcmp(itemName, "weapon_p250") || strcmp(itemName, "weapon_tec9") || strcmp(itemName, "weapon_cz75a") || strcmp(itemName, "weapon_deagle") || strcmp(itemName, "weapon_revolver") || strcmp(itemName, "weapon_usp_silencer") || strcmp(itemName, "weapon_hkp2000") || strcmp(itemName, "weapon_fiveseven"))
 	{
 		return 1;
 	}
-	else if (strcmp(itemName, "weapon_nova") == 0 || strcmp(itemName, "weapon_xm1014") == 0 || strcmp(itemName, "weapon_xm1014") == 0 || strcmp(itemName, "weapon_m249") == 0 || strcmp(itemName, "weapon_negev") == 0 || strcmp(itemName, "weapon_mag7") == 0 || strcmp(itemName, "weapon_mac10") == 0 || strcmp(itemName, "weapon_mp7") == 0 || strcmp(itemName, "weapon_ump45") == 0 || strcmp(itemName, "weapon_p90") == 0 || strcmp(itemName, "weapon_bizon") == 0 || strcmp(itemName, "weapon_galilar") == 0 || strcmp(itemName, "weapon_ak47") == 0 || strcmp(itemName, "weapon_ssg08") == 0 || strcmp(itemName, "weapon_sg556") == 0 || strcmp(itemName, "weapon_awp") == 0 || strcmp(itemName, "weapon_g3sg1") == 0 || strcmp(itemName, "weapon_famas") == 0 || strcmp(itemName, "weapon_m4a1") == 0 || strcmp(itemName, "weapon_m4a1_silencer") == 0 || strcmp(itemName, "weapon_aug") == 0 || strcmp(itemName, "weapon_scar20") == 0)
-	{
+	else if (strcmp(itemName, "weapon_nova") || strcmp(itemName, "weapon_xm1014") || strcmp(itemName, "weapon_xm1014") || strcmp(itemName, "weapon_m249") || strcmp(itemName, "weapon_negev") || strcmp(itemName, "weapon_mag7") || strcmp(itemName, "weapon_mac10") || strcmp(itemName, "weapon_mp7") || strcmp(itemName, "weapon_ump45") || strcmp(itemName, "weapon_p90") || strcmp(itemName, "weapon_bizon") || strcmp(itemName, "weapon_galilar") || strcmp(itemName, "weapon_ak47") || strcmp(itemName, "weapon_ssg08") || strcmp(itemName, "weapon_sg556") || strcmp(itemName, "weapon_awp") || strcmp(itemName, "weapon_g3sg1") || strcmp(itemName, "weapon_famas") || strcmp(itemName, "weapon_m4a1") || strcmp(itemName, "weapon_m4a1_silencer") || strcmp(itemName, "weapon_aug") || strcmp(itemName, "weapon_scar20")) {
 		return 2;
 	}
 	return 0;
@@ -127,8 +125,8 @@ public int getClientsWeapon(const char[] itemName)
 
 public void giveItemToPlayer(int client, const char[] item)
 {
-	int weapon_money = getWeaponMoney(client, item);
-	int player_money = GetEntProp(client, Prop_Send, "m_iAccount");
+	int	 weapon_money = getWeaponMoney(client, item);
+	int	 player_money = GetEntProp(client, Prop_Send, "m_iAccount");
 
 	if (player_money >= weapon_money)
 	{
@@ -155,11 +153,12 @@ public void giveItemToPlayer(int client, const char[] item)
 
 public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	++roundCounter;
+	char message[128];
+	Format(message, sizeof(message), "%d", roundCounter);
 
-	if (roundCounter == 16)
+	if (strcmp(message, "16") == 0)
 	{
-		for (int i = 0; i < sizeof(whoUsedTaser); ++i)
+		for (int i = 0; i < 20; i++)
 		{
 			whoUsedTaser[i] = 0;
 		}
@@ -167,10 +166,9 @@ public Action OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 		currentIndex = 0;
 	}
 
+	roundCounter++;
 	return Plugin_Continue;
 }
-
-
 
 public int getWeaponMoney(int client, const char[] itemName)
 {
